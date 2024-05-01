@@ -4,9 +4,9 @@ import style from './signup.module.css';
 import {useRouter} from "next/navigation";
 
 export default function BackButton() {
-    
     const router = useRouter();
     const onClickClose = () => {
+        console.log("back")
         router.back();
         // TODO: 뒤로가기가 /home이 아니면 /home으로 보내기
     }

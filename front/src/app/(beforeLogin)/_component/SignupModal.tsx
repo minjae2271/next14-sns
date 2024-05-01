@@ -2,12 +2,21 @@
 
 import BackButton from '@/app/(afterLogin)/_component/BackButton';
 import onSubmit from '@/app/(beforeLogin)/_lib/signup'
-
 import { useFormState, useFormStatus } from 'react-dom';
 import style from './signup.module.css';
 
+function showMessage(message: string | undefined) {
+  if (message === 'no_id') {
+    return '아이디를 입력해주세요.'
+  }
+  if (message === 'user_exists') {
+    return '이미 존재하는 아이디입니다.'
+  }
+  return ''
+}
+
 export default function SignupModal() {
-  const [state, formAction] = useFormState(onSubmit, {message: ""})
+  const [state, formAction] = useFormState(onSubmit, { message: "" })
   const { pending } = useFormStatus();
 
   return (
@@ -46,7 +55,8 @@ export default function SignupModal() {
               </div>
             </div>
             <div className={style.modalFooter}>
-              <button className={style.actionButton} disabled={pending}>가입하기</button>
+              <button type='submit' className={style.actionButton} disabled={pending}>가입하기</button>
+              <div className={style.error}>{showMessage(state?.message)}</div>
             </div>
           </form>
         </div>
