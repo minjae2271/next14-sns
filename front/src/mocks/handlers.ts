@@ -1,6 +1,6 @@
 import { http, HttpResponse } from 'msw';
 
-export const handlers = [
+export const handlers = [ 
     http.post('/api/users', async () => {
       console.log('회원가입');
       // return HttpResponse.text(JSON.stringify('users_exists'), {
