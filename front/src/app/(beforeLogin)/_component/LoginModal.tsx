@@ -2,7 +2,7 @@
 
 import style from '@/app/(beforeLogin)/_component/login.module.css';
 import { signIn } from 'next-auth/react';
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 import {ChangeEventHandler, FormEventHandler, useState} from "react";
 
 export default function LoginModal() {

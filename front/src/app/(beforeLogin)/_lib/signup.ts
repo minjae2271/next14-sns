@@ -1,6 +1,7 @@
 "use server";
 
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
+import { signIn } from "@/auth";
 
 export default async function onSubmit (prevState: any, formData: FormData) {
     let shouldRedirect = false;
@@ -22,6 +23,12 @@ export default async function onSubmit (prevState: any, formData: FormData) {
         }
         
         shouldRedirect = true;
+
+        await signIn("credentials", {
+            username: formData.get('id'),
+            password: formData.get('password'),
+            redirect: false,
+        })
     } catch (err) {
         console.error(err);
         return {message: 'system_error'};
