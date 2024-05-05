@@ -28,7 +28,8 @@ export default async function onSubmit (prevState: any, formData: FormData) {
             username: formData.get('id'),
             password: formData.get('password'),
             redirect: false,
-        })
+        });
+        
     } catch (err) {
         console.error(err);
         return {message: 'system_error'};

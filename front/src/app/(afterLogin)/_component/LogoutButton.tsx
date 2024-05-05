@@ -7,14 +7,7 @@ import { signOut, useSession } from "next-auth/react";
 export default function LogoutButton() {
     const router = useRouter();
     
-    // const me = {
-    //     id: 'minjae',
-    //     nickname: 'elgol',
-    //     image: '/5Udwvqim.jpg',
-    // }
-
     const { data: me } = useSession();
-
 
     const onLogout = async () => {
         try{
