@@ -9,6 +9,7 @@ import TrendSection from "./_component/TrendSection";
 import FollowRecommend from './_component/FollowRecommend';
 import RightSearchZone from './_component/RIghtSearchZone';
 import { auth } from '@/auth';
+import RQProvider from "./_component/RQProvider";
 
 export default async function AfterLoginLayout({
   children, modal
@@ -41,6 +42,7 @@ export default async function AfterLoginLayout({
           </div>
         </section>
       </header>
+      <RQProvider>
       <div className={styles.rightSectionWrapper}>
         {/* right wrapper */}
         <div className={styles.rightSectionInner}>
@@ -58,6 +60,7 @@ export default async function AfterLoginLayout({
         </div>
       </div>
     {modal}
+    </RQProvider>
     </div>
   );
 }

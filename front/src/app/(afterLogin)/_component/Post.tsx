@@ -7,49 +7,53 @@ import style from "./post.module.css";
 import ActionButtons from "./ActionButtons";
 import PostArticle from "./PostArticle";
 import PostImages from "./PostImages";
+import { Post as IPost } from "@/model/Post";
 
 dayjs.locale("ko");
 dayjs.extend(relativeTime);
 
 type Props = {
   noImage? : boolean,
+  post: IPost,
 }
 
-export default function Post({ noImage }: Props) {
-  const target = {
-    postId: 1,
-    User: {
-      id: "elonmusk",
-      nickname: "Elon Musk",
-      image: "/yRsRRjGO.jpg",
-    },
-    content: "클론코딩 라이브로 하니 너무 힘들어요 ㅠㅠ",
-    createdAt: new Date(),
-    Images: [
+export default function Post({ noImage, post }: Props) {
+  // const target = {
+  //   postId: 1,
+  //   User: {
+  //     id: "elonmusk",
+  //     nickname: "Elon Musk",
+  //     image: "/yRsRRjGO.jpg",
+  //   },
+  //   content: "클론코딩 라이브로 하니 너무 힘들어요 ㅠㅠ",
+  //   createdAt: new Date(),
+  //   Images: [
 
-    ] as any[],
-  };
+  //   ] as any[],
+  // };
 
-  if (Math.random() > 0.5 && !noImage) {
-    target.Images.push(
-      { 
-        imageId: 1,
-        link: faker.image.urlLoremFlickr(),
-      },
-      { 
-        imageId: 2,
-        link: faker.image.urlLoremFlickr(),
-      },
-      { 
-        imageId: 3,
-        link: faker.image.urlLoremFlickr(),
-      },
-      { 
-        imageId: 4,
-        link: faker.image.urlLoremFlickr(),
-      }
-    )
-  }
+  // if (Math.random() > 0.5 && !noImage) {
+  //   target.Images.push(
+  //     { 
+  //       imageId: 1,
+  //       link: faker.image.urlLoremFlickr(),
+  //     },
+  //     { 
+  //       imageId: 2,
+  //       link: faker.image.urlLoremFlickr(),
+  //     },
+  //     { 
+  //       imageId: 3,
+  //       link: faker.image.urlLoremFlickr(),
+  //     },
+  //     { 
+  //       imageId: 4,
+  //       link: faker.image.urlLoremFlickr(),
+  //     }
+  //   )
+  // }
+
+  const target = post;
 
   return (
     <PostArticle post={target}>
