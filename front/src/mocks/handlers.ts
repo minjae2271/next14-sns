@@ -83,5 +83,116 @@ export const handlers = [
           },
         ]
       )
+    }),
+    http.get('api/followingPosts', () => {
+      console.log("팔로잉 게시글");
+      return HttpResponse.json(
+        [
+          {
+            postId: 1,
+            User: {
+              id: 'elonmusk',
+              nickname: 'Elon',
+              image: '/yRsRRjGO.jpg',
+            },
+            content: 'stop following me!',
+            Images: [
+              {
+                ImageId: 1,
+                link: faker.image.urlLoremFlickr()
+              }
+            ],
+            createdAt: new Date(Date.now())
+          },
+          {
+            postId: 2,
+            User: {
+              id: 'saitama',
+              nickname: 'hero',
+              image: '/yRsRRjGO.jpg',
+            },
+            content: 'stop following me!',
+            Images: [
+              {
+                ImageId: 2,
+                link: faker.image.urlLoremFlickr()
+              }
+            ],
+            createdAt: new Date(Date.now())
+          },
+          {
+            postId: 3,
+            User: {
+              id: 'agumon',
+              nickname: 'digimon',
+              image: '/yRsRRjGO.jpg',
+            },
+            content: 'stop following me!',
+            Images: [
+              {
+                ImageId: 2,
+                link: faker.image.urlLoremFlickr()
+              }
+            ],
+            createdAt: new Date(Date.now())
+          },
+        ]
+      )
+    }),
+    http.get('api/search/:tag', ({request, params}) => {
+      console.log("검색 게시글");
+      const tag = params.tag
+      return HttpResponse.json(
+        [
+          {
+            postId: 1,
+            User: {
+              id: 'elonmusk',
+              nickname: 'Elon',
+              image: '/yRsRRjGO.jpg',
+            },
+            content: `search result ${tag}`,
+            Images: [
+              {
+                ImageId: 1,
+                link: faker.image.urlLoremFlickr()
+              }
+            ],
+            createdAt: new Date(Date.now())
+          },
+          {
+            postId: 2,
+            User: {
+              id: 'saitama',
+              nickname: 'hero',
+              image: '/yRsRRjGO.jpg',
+            },
+            content: `search result ${tag}`,
+            Images: [
+              {
+                ImageId: 2,
+                link: faker.image.urlLoremFlickr()
+              }
+            ],
+            createdAt: new Date(Date.now())
+          },
+          {
+            postId: 3,
+            User: {
+              id: 'agumon',
+              nickname: 'digimon',
+              image: '/yRsRRjGO.jpg',
+            },
+            content: `search result ${tag}`,
+            Images: [
+              {
+                ImageId: 2,
+                link: faker.image.urlLoremFlickr()
+              }
+            ],
+            createdAt: new Date(Date.now())
+          },
+        ]
+      )
     })
 ]
