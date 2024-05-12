@@ -15,5 +15,5 @@ export const getUserPosts: QueryFunction<Post[], [_1: string, _2: string, search
         throw new Error("Failed to fetch data");
     }
 
-    return res.json();
+    return res.json(); 
 }

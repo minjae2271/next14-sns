@@ -11,10 +11,29 @@ type Props = {
 }
 
 export default function UserInfo({ username }: Props) {
-  const { data: user } = useQuery<User, Object, User, [_1: string, _2: string]>({
+  const { data: user, error, isLoading } = useQuery<User, Object, User, [_1: string, _2: string]>({
     queryKey: ['users', username],
     queryFn: getUser,
   });
+
+  if (error) {
+    <>
+      <div className={style.header}>
+        <BackButton />
+        <h3 className={style.headerTitle}>프로필</h3>
+      </div>
+      <div className={style.userZone}>
+        <div className={style.userImage}>
+        </div>
+        <div className={style.userName}>
+          <div>@{username}</div>
+        </div>
+        <div className={style.noUserMessage}>
+            계정이 존재하지 않음
+        </div>
+      </div>
+    </>    
+  }
 
   if (!user) {
     return null;

@@ -27,7 +27,7 @@ export default async function Profile({ params }: Props) {
       <div>
         <UserPosts username={username}/>
       </div>
-      </HydrationBoundary>
+      </HydrationBoundary> 
     </main>
   )
 }

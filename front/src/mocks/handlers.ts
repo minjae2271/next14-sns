@@ -277,10 +277,14 @@ export const handlers = [
         status: 404,
       })
     }),
-    http.get('/api/users/:userId/posts/:postId', ({request, params}) => {
+    http.get('/api/posts/:postId', ({request, params}) => {
       console.log("게시글");
 
-      const {userId, postId} = params;
+      const {postId} = params;
+
+      if (parseInt(postId as string) > 10) {
+
+      }
 
       return HttpResponse.json(
         {
@@ -290,7 +294,7 @@ export const handlers = [
             nickname: 'Elon',
             image: '/yRsRRjGO.jpg',
           },
-          content: `${userId} 글의 답 ${postId}`,
+          content: `게시글 ${postId}`,
           Images: [
             {
               ImageId: 1,
@@ -301,7 +305,7 @@ export const handlers = [
         }
       )
     }),
-    http.get('/api/users/:userId/posts/:postId/comments', ({request, params}) => {
+    http.get('/api/posts/:postId/comments', ({request, params}) => {
       console.log("댓글");
 
       const {userId, postId} = params;

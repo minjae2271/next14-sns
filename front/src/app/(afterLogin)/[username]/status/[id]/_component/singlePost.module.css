@@ -1,0 +1,8 @@
+.noPostMessage {
+    height: 100;
+    font-size: 31;
+    font-weight: 'bold';
+    justify-content: center;
+    align-items: center;
+    display: flex;
+}
