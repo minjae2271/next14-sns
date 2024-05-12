@@ -2,7 +2,6 @@ import styles from './home.module.css';
 import Tab from './_component/Tab';
 import TabProvider from './_component/TabProvider';
 import PostForm from './_component/PostForm';
-import Post from '../_component/Post';
 import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query';
 import { getPostRecommends } from '@/app/(afterLogin)/home/_lib/getPostRecommends'
 import TabDecider from './_component/TabDecider';

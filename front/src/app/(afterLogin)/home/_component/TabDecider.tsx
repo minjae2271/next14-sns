@@ -9,6 +9,7 @@ export default function TabDecider() {
     const { tab } = useContext(TabContext);
 
     if (tab === "rec") {
+        console.log(tab)
         return <PostRecommends/>
     }
     return <FollowingPosts />

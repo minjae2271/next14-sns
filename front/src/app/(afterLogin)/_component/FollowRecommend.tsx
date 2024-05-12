@@ -1,15 +1,17 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query';
 import styles from './followRecommend.module.css';
+import { getFollowRecommends } from '../_lib/getFollowRecommends';
+import { User } from '@/model/User';
 
-export default function FollowRecommend() {
-    
+type props = {
+    user: User
+}
+
+export default function FollowRecommend({ user } : props) {
+   
     const onFollow = () => {};
-    const user = {
-        id: 'Elon Musk',
-        nickname: 'Elon Musk',
-        image: '/yRsRRjGO.jpg'
-    }
 
     return (
         <div className={styles.container}>

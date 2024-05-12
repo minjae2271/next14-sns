@@ -263,8 +263,19 @@ export const handlers = [
       console.log("사용자");
 
       const {userId} = params;
+
+      const found = User.find((v) => v.id === userId);
+      if (found) {
+        return HttpResponse.json(
+          found,
+        )
+      }
       
-      return HttpResponse.json(User[0]);
+      return HttpResponse.json({
+        message: 'no-such-user'
+      }, {
+        status: 404,
+      })
     }),
     http.get('/api/users/:userId/posts/:postId', ({request, params}) => {
       console.log("게시글");
