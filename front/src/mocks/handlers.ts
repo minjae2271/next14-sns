@@ -21,7 +21,7 @@ export const handlers = [
     }),
     http.post('/api/login', () => {
         console.log('로그인');
-        return HttpResponse.json({id: 'elonmusk', nickname: 'Elon Musk', image: '/yRsRRjGO.jpg'}, {
+        return HttpResponse.json(User[1], {
           headers: {
             'Set-Cookie': 'connect.sid=msw-cookie;HttpOnly;Path=/'
           }
@@ -283,7 +283,11 @@ export const handlers = [
       const {postId} = params;
 
       if (parseInt(postId as string) > 10) {
-
+        return HttpResponse.json({
+          message: 'no-such-user'
+        }, {
+          status: 404,
+        })
       }
 
       return HttpResponse.json(

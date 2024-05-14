@@ -80,8 +80,7 @@ export default function Post({ noImage, post }: Props) {
           </div>
           <div>{target.content}</div>
           <div>
-            <PostImages post={target}/>
-
+            { !noImage && <PostImages post={target}/>}
           </div>
           <ActionButtons />
         </div>

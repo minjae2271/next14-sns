@@ -1,6 +1,4 @@
 import style from './profile.module.css';
-import Post from "@/app/(afterLogin)/_component/Post";
-import BackButton from "@/app/(afterLogin)/_component/BackButton";
 import { QueryClient, dehydrate, HydrationBoundary } from '@tanstack/react-query';
 import UserPosts from './_component/UserPosts';
 import { getUserPosts } from './_lib/getUserPosts';
@@ -8,7 +6,7 @@ import UserInfo from './_component/UserInfo';
 import { getUser } from './_lib/getUser';
 
 type Props = {
-  params: {username: string}
+  params: {username: string} 
 }
 
 export default async function Profile({ params }: Props) {

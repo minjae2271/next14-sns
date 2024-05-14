@@ -8,7 +8,7 @@ const res = await fetch(`https://localhost:9090/api/posts/${id}`, {
     next: {
         tags: ['posts', id]
     },
-    cache: 'no-store'
+    // cache: 'no-store'
 });
 
 if (!res.ok) {
