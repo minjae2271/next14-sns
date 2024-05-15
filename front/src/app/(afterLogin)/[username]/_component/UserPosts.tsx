@@ -6,7 +6,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserPosts } from "../_lib/getUserPosts";
 
 type Props = {
-    username: string,
+    username: string, 
 }
 
 export default function UserPosts({ username } : Props) {

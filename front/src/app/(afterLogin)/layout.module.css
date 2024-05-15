@@ -24,6 +24,16 @@
     flex-direction: column;
 }
 
+@media all and (min-width: 1300px) {
+    .leftSection {
+        width: 275px;
+    }
+    
+    .leftSectionFixed {
+        align-items: flex-start;
+    }
+}
+
 .leftSectionFixed nav {
     flex: 1;
 }
@@ -102,6 +112,10 @@
     }
 }
 
+.rightSection {
+    display: none;
+}
+
 .rightSectionWrapper {
     display: flex;
     align-items: flex-start;
@@ -117,15 +131,21 @@
     justify-content: space-between;
 }
 
+@media all and (min-width: 1024px) {
+    .rightSection {
+        display: inline-block;
+        width: 350px;
+        height: 100%;
+    }
+    .rightSectionInner {
+        width: 990px;
+    }
+}
 .main {
     width: 600px;
     height: 200dvh;
 }
 
-.rightSection {
-    width: 350px;
-    height: 100%;
-}
 
 .followRecommend {
     font-size: 20px;

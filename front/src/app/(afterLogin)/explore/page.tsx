@@ -5,7 +5,7 @@ import TrendSection from "./_component/TrendSction";
 export default function Explore() {
     return (
       <main className={style.main}>
-        <div className={style.FormZone}>
+        <div className={style.formZone}>
           <SearchForm />
         </div>
         <div className={style.trend}>

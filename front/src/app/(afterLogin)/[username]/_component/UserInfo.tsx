@@ -47,7 +47,7 @@ export default function UserInfo({ username }: Props) {
       </div>
       <div className={style.userZone}>
         <div className={style.userImage}>
-          <img src={user?.image} alt={user?.id} />
+          <img src={user?.image as string} alt={user?.id} />
         </div>
         <div className={style.userName}>
           <div>{user?.nickname}</div>

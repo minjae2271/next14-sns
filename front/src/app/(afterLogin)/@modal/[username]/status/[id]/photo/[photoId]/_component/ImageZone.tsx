@@ -1,6 +1,6 @@
 "use client";
 
-import style from "./photoModal.module.css";
+import style from "../photoModal.module.css";
 import { Post as IPost } from "@/model/Post";
 import ActionButtons from "@/app/(afterLogin)/_component/ActionButtons";
 import PhotoModalCloseButton from "./PhotoModalCloseButton";

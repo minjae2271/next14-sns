@@ -13,7 +13,9 @@
 .formZone {
     padding-left: 16px;
     width: 566px;
+    margin-top: 20px;
     margin-bottom: 60px;
+
 }
 
 .trendBg {
@@ -24,7 +26,7 @@
     border-top: 1px solid rgb(239, 243, 244);
     font-size: 20px;
     font-weight: bold;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 12px;
 }
 .trend h3 {

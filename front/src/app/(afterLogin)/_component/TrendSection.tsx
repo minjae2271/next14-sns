@@ -10,17 +10,17 @@ import { useQuery } from '@tanstack/react-query';
 
 export default function TrendSection() {
     const pathname = usePathname(); // /부터 ?까지
-    const { data: session } = useSession();
+    const { data: me } = useSession();
 
     const { data } = useQuery<IHashtag[]>({
         queryKey: ['trends'],
         queryFn: getTrends,
-        enabled: !!session?.user,
+        enabled: !!me?.user,
     })
 
     if(pathname === '/explore') return null;
 
-    if ( session?.user) {
+    if ( me?.user) {
         return (
             <div className={styles.trendBg}>
                 <div className={styles.trend}>

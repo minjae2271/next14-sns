@@ -2,16 +2,14 @@
 
 import { ChangeEventHandler, FormEventHandler, useRef, useState } from 'react';
 import styles from './postForm.module.css';
+import { useSession } from 'next-auth/react';
 
 export default function PostForm() {
-
-    const me = {
-        id: 'zerohch0',
-        image: '/5Udwvqim.jpg'
-      };
     
     const [content, setContent] = useState('');
     const imageRef = useRef<HTMLInputElement>(null);
+
+    const { data: me } = useSession()
 
     const onSubmit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -27,7 +25,7 @@ export default function PostForm() {
         <form className={styles.postForm} onSubmit={onSubmit}>
             <div className={styles.postUserSection}>
                 <div className={styles.postUserImage}>
-                    <img src={me.image} alt={me.id} />
+                    <img src={me?.user?.image as string} alt={me?.user?.email as string} />
                 </div>
             </div>
             <div className={styles.postInputSection}>
