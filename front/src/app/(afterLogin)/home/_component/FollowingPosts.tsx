@@ -7,7 +7,7 @@ import { Post as IPost } from "@/model/Post";
 import styles from "./home.module.css";
 
 export default function PostRecommends() {
-  const { data, isPending } = useQuery<IPost[]>({
+  const { data, isPending, isError } = useQuery<IPost[]>({
     queryKey: ["posts", "followings"],
     queryFn: getFollowingPosts,
   });
@@ -44,6 +44,10 @@ export default function PostRecommends() {
         </svg>
       </div>
     );
+  }
+
+  if (isError) {
+    return 
   }
 
   // return data?.map((post) => (
