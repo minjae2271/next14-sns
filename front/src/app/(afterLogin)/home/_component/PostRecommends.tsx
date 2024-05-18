@@ -3,7 +3,6 @@
 import {
   InfiniteData,
   useInfiniteQuery,
-  useQuery,
 } from "@tanstack/react-query";
 import { getPostRecommends } from "../_lib/getPostRecommends";
 import Post from "../../_component/Post";
