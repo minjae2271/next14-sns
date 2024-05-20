@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { getFollowingPosts } from "../_lib/getFollowingPosts";
 import Post from "../../_component/Post";
 import { Post as IPost } from "@/model/Post";
-import styles from "./home.module.css";
+import styles from "../home.module.css";
 
 export default function PostRecommends() {
   const { data, isPending, isError } = useQuery<IPost[]>({

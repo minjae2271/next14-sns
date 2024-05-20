@@ -10,6 +10,8 @@ export default async function onSubmit (prevState: any, formData: FormData) {
         return { message: 'no_id'}
     }
 
+    formData.set('nickname', formData.get('name') as string);
+
     try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users`, {
             method: 'post',
@@ -18,6 +20,7 @@ export default async function onSubmit (prevState: any, formData: FormData) {
         });
         
         console.log(response.status);
+        // console.log(response);
         if (response.status === 403) {
             return {message: 'user_exists'}
         }
