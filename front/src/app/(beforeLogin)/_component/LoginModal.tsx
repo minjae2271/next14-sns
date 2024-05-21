@@ -5,6 +5,7 @@ import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import {ChangeEventHandler, FormEventHandler, useState} from "react";
 import BackButton from './BackButton';
+import { response } from 'express';
 
 export default function LoginModal() {
   const [id, setId] = useState('');
@@ -16,11 +17,14 @@ export default function LoginModal() {
     e.preventDefault();
     setMessage('');
     try {
-      await signIn("credentials", {
+      const res =await signIn("credentials", {
         username: id,
         password,
         redirect: false,
       });
+      if (!res?.ok) {
+        setMessage("아이디가")
+      }
       router.replace('/home');
     } catch(err) {
       console.error(err);

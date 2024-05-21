@@ -2,14 +2,16 @@
 
 import { ChangeEventHandler, FormEventHandler, useRef, useState } from 'react';
 import styles from './postForm.module.css';
-import { useSession } from 'next-auth/react';
+import { Session } from "@auth/core/types";
 
-export default function PostForm() {
+type Props = {
+    me: Session | null
+}
+
+export default function PostForm({ me }: Props) {
     
     const [content, setContent] = useState('');
     const imageRef = useRef<HTMLInputElement>(null);
-
-    const { data: me } = useSession()
 
     const onSubmit: FormEventHandler = (e) => {
         e.preventDefault();
