@@ -1,15 +1,11 @@
 "use client";
 
-import {
-  MouseEventHandler,
-  ChangeEventHandler,
-  FormEventHandler,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEventHandler, FormEvent, useRef, useState } from "react";
 import styles from "./postForm.module.css";
 import { Session } from "@auth/core/types";
 import TextareaAutoSize from "react-textarea-autosize";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Post as IPost } from "@/model/Post";
 
 type Props = {
   me: Session | null;
@@ -17,22 +13,64 @@ type Props = {
 
 export default function PostForm({ me }: Props) {
   const [content, setContent] = useState("");
-  const [prev, setPrev] = useState<Array<{dataUrl: string, file: File} | null>>([]);
+  const [prev, setPrev] = useState<
+    Array<{ dataUrl: string; file: File } | null>
+  >([]);
   const imageRef = useRef<HTMLInputElement>(null);
+  const queryClient = useQueryClient();
 
-  const onSubmit: FormEventHandler = async (e) => {
-    e.preventDefault();
-    const formData = new FormData();
-    formData.append('content', content);
-    prev.forEach((p) => {
-        p && formData.append('images', p.file);
-    })
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
-        method: 'post',
-        credentials: 'include',
+  const mutation = useMutation({
+    mutationFn: async (e: FormEvent) => {
+      e.preventDefault();
+      const formData = new FormData();
+      formData.append("content", content);
+      prev.forEach((p) => {
+        p && formData.append("images", p.file);
+      });
+      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts`, {
+        method: "post",
+        credentials: "include",
         body: formData,
-    });
-  };
+      });
+    },
+    async onSuccess(response, variable) {
+        const newPost = await response.json();
+        setContent("");
+        setPrev([]);
+        if (queryClient.getQueryData(["posts", "recommends"])) {
+            queryClient.setQueryData(
+              ["posts", "recommends"],
+              (prevData: { pages: IPost[][] }) => {
+                const shallow = {
+                  ...prevData,
+                  pages: [...prevData.pages],
+                };
+                shallow.pages[0] = [...shallow.pages[0]];
+                shallow.pages[0].unshift(newPost);
+                return shallow;
+              }
+            );
+        }
+        if (queryClient.getQueryData(["posts", "followings"])) {
+            queryClient.setQueryData(
+              ["posts", "followings"],
+              (prevData: { pages: IPost[][] }) => {
+                const shallow = {
+                  ...prevData,
+                  pages: [...prevData.pages],
+                };
+                shallow.pages[0] = [...shallow.pages[0]];
+                shallow.pages[0].unshift(newPost);
+                return shallow;
+              }
+            );
+        }
+    },
+    onError() {
+        alert("업로드 에러");
+    },
+  });
+
   const onChangeTextarea: ChangeEventHandler<HTMLTextAreaElement> = (e) => {
     setContent(e.target.value);
   };
@@ -49,8 +87,8 @@ export default function PostForm({ me }: Props) {
           setPrev((prevPrev) => {
             const prev = [...prevPrev];
             prev[index] = {
-                dataUrl: reader.result as string,
-                file,
+              dataUrl: reader.result as string,
+              file,
             };
             return prev;
           });
@@ -69,7 +107,7 @@ export default function PostForm({ me }: Props) {
   };
 
   return (
-    <form className={styles.postForm} onSubmit={onSubmit}>
+    <form className={styles.postForm} onSubmit={mutation.mutate}>
       <div className={styles.postUserSection}>
         <div className={styles.postUserImage}>
           <img
@@ -89,7 +127,7 @@ export default function PostForm({ me }: Props) {
             (v, index) =>
               v && (
                 <div key={index} onClick={() => onRemoveImage(index)}>
-                  <img src={v.dataUrl} className={styles.prevImg}/>
+                  <img src={v.dataUrl} className={styles.prevImg} />
                 </div>
               )
           )}
