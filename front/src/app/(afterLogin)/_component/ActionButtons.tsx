@@ -2,19 +2,133 @@
 
 import cx from "classnames";
 import styles from "./actionButtons.module.css";
+import { MouseEventHandler } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { Post as IPost } from "@/model/Post";
+import { useSession } from "next-auth/react";
 
 type Props = {
-  white?: boolean,  
+  white?: boolean,
+  post: IPost,  
 }
 
-export default function ActionButtons({ white }: Props) {
-  const commented = false;
-  const reposted = true;
-  const liked = false;
+export default function ActionButtons({ white, post }: Props) {
+  const queryClient = useQueryClient();
+  const { data: session } = useSession();
+
+  const commented = !!post.Comments.find((v) => v.userId === session?.user?.email);
+  const reposted = !!post.Reposts.find((v) => v.userId === session?.user?.email);
+  const liked = !!post.Hearts.find((v) => v.userId === session?.user?.email);
+
+  const { postId } = post;
+
+  const heart = useMutation({
+    mutationFn: () => {
+      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${postId}/heart`, {
+        method: 'post',
+        credentials: 'include',
+      })
+    },
+    onMutate() {
+      const queryCache = queryClient.getQueryCache();
+      const queryKeys = queryCache.getAll().map(cache => cache.queryKey);
+      console.log('queryKeys', queryKeys);
+      queryKeys.forEach((queryKey) => {
+        if (queryKey[0] === 'posts') {
+          const value: IPost | IPost[] | undefined = queryClient.getQueryData(queryKey);
+          if (Array.isArray(value)) {
+            const index = value.findIndex((v) => v.postId === postId);
+            if (index > -1) {
+              const shallow = {...value};
+              shallow[index] = {
+                ...shallow[index],
+                Hearts: [{
+                  userId: session?.user?.email as string
+                }],
+                _count: {
+                  ...shallow[index]._count,
+                  Hearts: shallow[index]._count.Hearts + 1
+                }
+              }
+              queryClient.setQueryData(queryKey, shallow);
+            }
+          } else if (value) {
+            //싱글 포스트인 경우
+            if (value?.postId === postId) {
+              const shallow = {
+                ...value,
+                Hearts: [{
+                  userId: session?.user?.email as string
+                }],
+                _count: {
+                  ...value._count,
+                  Hearts: value._count.Hearts + 1
+                }
+              }
+              queryClient.setQueryData(queryKey, shallow);
+            }
+          }
+        }
+      })
+    }
+  });
+  const unheart = useMutation({
+    mutationFn: () => {
+      return fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/posts/${postId}/heart`, {
+        method: 'delete',
+        credentials: 'include',
+      })
+    },
+    onMutate() {
+      const queryCache = queryClient.getQueryCache();
+      const queryKeys = queryCache.getAll().map(cache => cache.queryKey);
+      console.log('queryKeys', queryKeys);
+      queryKeys.forEach((queryKey) => {
+        if (queryKey[0] === 'posts') {
+          const value: IPost | IPost[] | undefined = queryClient.getQueryData(queryKey);
+          if (Array.isArray(value)) {
+            const index = value.findIndex((v) => v.postId === postId);
+            if (index > -1) {
+              const shallow = {...value};
+              shallow[index] = {
+                ...shallow[index],
+                Hearts: shallow[index].Hearts.filter((v) => v.userId !== session?.user?.email),
+                _count: {
+                  ...shallow[index]._count,
+                  Hearts: shallow[index]._count.Hearts + 1
+                }
+              }
+              queryClient.setQueryData(queryKey, shallow);
+            }
+          } else if (value) {
+            //싱글 포스트인 경우
+            if (value?.postId === postId) {
+              const shallow = {
+                ...value,
+                Hearts: value.Hearts.filter((v) => v.userId !== session?.user?.email),
+                _count: {
+                  ...value._count,
+                  Hearts: value._count.Hearts + 1
+                }
+              }
+              queryClient.setQueryData(queryKey, shallow);
+            }
+          }
+        }
+      })
+    }
+  });
 
   const onClickComment = () => {};
   const onClickRepost = () => {};
-  const onClickHeart = () => {};
+  const onClickHeart: MouseEventHandler<HTMLButtonElement> = (e) => {
+    e.stopPropagation();
+    if (liked) {
+      unheart.mutate();
+    } else {
+      heart.mutate();
+    }
+  };
 
   return (
     <div className={styles.actionButtons}>
@@ -26,7 +140,7 @@ export default function ActionButtons({ white }: Props) {
             </g>
           </svg>
         </button>
-        <div className={styles.count}>{1 || ""}</div>
+        <div className={styles.count}>{post._count.Comments || ""}</div>
       </div>
       <div className={cx(styles.repostButton, reposted && styles.reposted, white && styles.white)}>
         <button onClick={onClickRepost}>
@@ -36,7 +150,7 @@ export default function ActionButtons({ white }: Props) {
             </g>
           </svg>
         </button>
-        <div className={styles.count}>{1 || ""}</div>
+        <div className={styles.count}>{post._count.Reposts || ""}</div>
       </div>
       <div className={cx(styles.heartButton, liked && styles.liked, white && styles.white)}>
         <button onClick={onClickHeart}>
@@ -46,7 +160,7 @@ export default function ActionButtons({ white }: Props) {
             </g>
           </svg>
         </button>
-        <div className={styles.count}>{0 || ""}</div>
+        <div className={styles.count}>{post._count.Hearts || ""}</div>
       </div>
     </div>
   );
